@@ -195,3 +195,11 @@ import CoreGraphics
         #expect(r.anchorTop)
     }
 }
+
+
+@Suite struct TerminalSafetyTests {
+    @Test func flattensNewlinesAndControlChars() {
+        #expect(TerminalSafety.sanitize("ls -la\nrm -rf /tmp/x\r\n") == "ls -la rm -rf /tmp/x")
+        #expect(TerminalSafety.sanitize("hola\u{1B}[201~ mundo") == "hola[201~ mundo")
+    }
+}

@@ -157,6 +157,9 @@ Inicia sesión con **tu cuenta de ChatGPT** en el navegador.
 - **Seguir dictando**: si haces una pausa y sigues en la misma casilla, continúa la
   frase tal cual, sin reescribir lo anterior.
 - **Sin casilla de texto**: el dictado se queda en el portapapeles.
+- **En la terminal**: Dicta pega en **una sola línea** y **nunca pulsa Intro por ti**,
+  así que nada se ejecuta solo; revisa el comando y pulsa Intro tú. Tampoco envía a la
+  IA lo que hay en la pantalla de la terminal.
 - **Historial** y **Diccionario** en el menú del icono. En el diccionario pon cómo se
   escribe una palabra y cómo la oye el reconocedor (p. ej. *Wispr ← whisper*).
 

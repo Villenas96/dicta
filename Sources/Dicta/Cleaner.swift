@@ -369,6 +369,8 @@ struct CodexCleaner: TextCleaner {
 actor CodexRunner {
     static let shared = CodexRunner()
     nonisolated static let executablePath: String? = CLITool.find("codex")
+    nonisolated static let disabledFeatures = ["shell_tool", "unified_exec", "apps", "browser_use", "browser_use_external",
+                                               "computer_use", "in_app_browser", "tool_suggest", "sleep_tool"]
 
     private struct Warm { let process: Process; let stdin: FileHandle; let out: URL; let model: String; let born: Date }
     private var warm: Warm?
@@ -398,6 +400,8 @@ actor CodexRunner {
         try? FileManager.default.createDirectory(at: cwd, withIntermediateDirectories: true)
         var args = ["exec", "--skip-git-repo-check", "--ephemeral", "--ignore-user-config", "-s", "read-only",
                     "-c", "model_reasoning_effort=\"low\"", "--color", "never", "-C", cwd.path, "-o", out.path]
+        // Solo corrige texto: sin terminal, navegador, apps ni control del ordenador.
+        for f in CodexRunner.disabledFeatures { args += ["--disable", f] }
         if !model.isEmpty { args += ["-m", model] }
         args.append("-")
         let p = Process()

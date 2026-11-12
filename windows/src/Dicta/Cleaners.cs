@@ -160,6 +160,10 @@ public sealed class CodexCleaner(string model) : ICleaner
         var args = new List<string> { "exec", "--skip-git-repo-check", "--ephemeral", "--ignore-user-config", "-s", "read-only",
             "-c", "model_reasoning_effort=low", "--color", "never", "-C", Paths.Work, "-o", outFile };
         if (model.Length > 0) { args.Add("-m"); args.Add(model); }
+        // Solo corrige texto: sin terminal, navegador, apps ni control del ordenador.
+        foreach (var f in new[] { "shell_tool", "unified_exec", "apps", "browser_use", "browser_use_external",
+                                  "computer_use", "in_app_browser", "tool_suggest", "sleep_tool" })
+        { args.Add("--disable"); args.Add(f); }
         args.Add("-");
         var psi = CliFinder.StartInfo(Exe!, args);
         psi.Environment.Remove("OPENAI_API_KEY"); // que use la sesión de ChatGPT

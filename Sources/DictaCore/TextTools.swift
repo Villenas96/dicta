@@ -206,3 +206,24 @@ public enum ContinuityDetector {
         return beforeCursor.isEmpty && last.elementID == elementID && now.timeIntervalSince(last.date) <= 120
     }
 }
+
+
+// MARK: - Seguridad al pegar en terminales
+
+public enum TerminalSafety {
+    /// En una terminal, un salto de línea ejecuta lo pegado. Dejamos una sola línea
+    /// sin caracteres de control (ESC, retorno de carro, fin de pegado entre corchetes…),
+    /// para que el usuario revise y pulse Intro él mismo.
+    public static func sanitize(_ text: String) -> String {
+        var out = ""
+        for scalar in text.unicodeScalars {
+            switch scalar.value {
+            case 0x0A, 0x0D, 0x09, 0x2028, 0x2029: out.append(" ")
+            case 0x00...0x1F, 0x7F, 0x80...0x9F: continue
+            default: out.unicodeScalars.append(scalar)
+            }
+        }
+        return out.replacingOccurrences(of: " {2,}", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespaces)
+    }
+}

@@ -148,7 +148,9 @@ public sealed class Controller
         var cont = !edit && ContinuityDetector.IsContinuation(_last, snap.App, snap.Before, DateTime.Now);
         var ctx = Settings.Current.UseContext;
         var req = new CleanupRequest(raw, instruction ? CleanupMode.Edit : CleanupMode.Dictation, snap.Selected, snap.App,
-            snap.IsTerminal, ctx ? snap.Before : "", ctx ? snap.After : "", cont, Dictionary.PromptLines);
+            // El contenido de una terminal no se envía a la IA (puede contener salida de comandos).
+            snap.IsTerminal, ctx && !snap.IsTerminal ? snap.Before : "", ctx && !snap.IsTerminal ? snap.After : "",
+            cont, Dictionary.PromptLines);
 
         var cleaner = CleanerFactory.Make();
         Overlay.Show(Overlay.Phase.Processing, $"Corrigiendo con {cleaner.DisplayName}…");
@@ -163,6 +165,8 @@ public sealed class Controller
         if (!instruction) text = TextTools.FitInsertion(text, snap.Before, Dictionary.Set);
 
         var target = FocusSnapshot.Capture();
+        // En terminales: una sola línea y sin caracteres de control, para que nada se ejecute solo.
+        if (target.IsTerminal) text = TerminalSafety.Sanitize(text);
         string outcome;
         if (target.CanPaste)
         {

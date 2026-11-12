@@ -261,7 +261,9 @@ final class DictationController {
             raw: rawFixed,
             mode: isInstruction ? .edit(selected: snap.selectedText) : .dictation,
             appName: snap.appName, bundleID: snap.bundleID, isTerminal: snap.isTerminal,
-            beforeCursor: useCtx ? snap.beforeCursor : "", afterCursor: useCtx ? snap.afterCursor : "",
+            // El contenido de una terminal no se envía a la IA (puede contener salida de comandos).
+            beforeCursor: useCtx && !snap.isTerminal ? snap.beforeCursor : "",
+            afterCursor: useCtx && !snap.isTerminal ? snap.afterCursor : "",
             isContinuation: continuation, dictionary: dictionary.promptLines)
 
         let cleaner = CleanerFactory.make()
@@ -291,6 +293,8 @@ final class DictationController {
         defer { if outcome == .pasted { overlay.setAvoid(AX.avoidRect(for: AX.snapshot())) } }
         // Las terminales a veces no exponen la casilla por Accesibilidad, pero ⌘V funciona.
         let canPaste = AX.isTrusted && (target.hasTarget || target.isTerminal)
+        // En terminales: una sola línea y sin caracteres de control, para que nada se ejecute solo.
+        if target.isTerminal { text = TerminalSafety.sanitize(text) }
         if canPaste {
             let ok = await TextInserter.paste(text, into: target, keepInClipboard: settings.keepInClipboard)
             if ok {

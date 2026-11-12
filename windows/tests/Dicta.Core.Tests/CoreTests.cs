@@ -73,3 +73,13 @@ public class EditAndTextTests
         Assert.False(new RectD(x, y, 360, 60).Intersects(box));
     }
 }
+
+
+public class TerminalSafetyTests
+{
+    [Fact] public void Flattens()
+    {
+        Assert.Equal("ls -la rm -rf x", TerminalSafety.Sanitize("ls -la\nrm -rf x\r\n"));
+        Assert.Equal("hola[201~ mundo", TerminalSafety.Sanitize("hola\u001b[201~ mundo"));
+    }
+}
