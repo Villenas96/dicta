@@ -1,0 +1,9 @@
+.DS_Store
+.build/
+.swiftpm/
+dist/
+*.p12
+windows/**/bin/
+windows/**/obj/
+windows/publish/
+windows/out/

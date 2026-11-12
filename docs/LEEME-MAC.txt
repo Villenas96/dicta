@@ -1,0 +1,25 @@
+DICTA — Dictado por voz en español para Mac
+===========================================
+
+Requisitos: macOS 26 (Tahoe) o superior.
+
+INSTALAR
+1. Arrastra «Dicta» a la carpeta «Aplicaciones».
+2. Abre Dicta desde Aplicaciones.
+   Si macOS dice que no puede comprobar el desarrollador:
+     Ajustes del Sistema › Privacidad y seguridad › baja hasta abajo › «Abrir igualmente».
+   (Dicta no está firmada con una cuenta de desarrollador de Apple de pago; es normal.)
+3. Concede los tres permisos que pide: Micrófono, Accesibilidad y
+   Monitorización de entrada. Si alguno no se marca, pulsa «Reiniciar Dicta».
+4. La primera vez descarga el modelo de voz en español (unos minutos).
+
+USAR
+- Mantén la tecla ⌥ (Opción) DERECHA, habla y suelta: el texto se pega donde escribes.
+- Doble toque en ⌥ derecha: se queda escuchando. Otro toque: para.
+- Mayús + ⌥ derecha con texto seleccionado: modo edición.
+- Esc: cancela.
+
+CORRECCIÓN CON IA (menú del icono › Ajustes)
+- Si tienes Claude Code instalado y con sesión iniciada: se usa tu suscripción.
+- Si no: Apple Intelligence (Macs con chip Apple y Apple Intelligence activado).
+- Si no hay ninguna: limpieza básica sin IA.
